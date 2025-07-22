@@ -14,7 +14,7 @@ import {
   CourseSchemaType,
   courseStatus,
 } from '@/lib/zodSchemas';
-import { ArrowLeft, Plus, PlusIcon, Sparkle } from 'lucide-react';
+import { ArrowLeft, FileDiff, Plus, PlusIcon, Sparkle } from 'lucide-react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,6 +37,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import RichTextEditor from '@/components/rich-text-editor/Editor';
+import Uploader from '@/components/file-uploader/Uploader';
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({
@@ -151,11 +152,6 @@ export default function CourseCreationPage() {
                     <FormLabel>description</FormLabel>
                     <FormControl>
                       <RichTextEditor field={field} />
-                      {/* <Textarea
-                        placeholder="Description"
-                        {...field}
-                        className="min-h-[120px]"
-                      /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -169,7 +165,7 @@ export default function CourseCreationPage() {
                   <FormItem className="w-full">
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="Thumbnail Url" {...field} />
+                      <Uploader onChange={field.onChange} value={field.value} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -258,7 +254,18 @@ export default function CourseCreationPage() {
                     <FormItem className="w-full">
                       <FormLabel>Price ($)</FormLabel>
                       <FormControl>
-                        <Input placeholder="Price" type="number" {...field} />
+                        <Input
+                          placeholder="Price"
+                          type="number"
+                          value={field.value ?? ''}
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            const parsedValue =
+                              value === '' ? '' : Number(value);
+
+                            field.onChange(parsedValue);
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
