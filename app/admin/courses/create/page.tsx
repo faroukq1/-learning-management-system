@@ -14,7 +14,7 @@ import {
   CourseSchemaType,
   courseStatus,
 } from '@/lib/zodSchemas';
-import { ArrowLeft, FileDiff, Plus, PlusIcon, Sparkle } from 'lucide-react';
+import { ArrowLeft, Loader2, PlusIcon, Sparkle } from 'lucide-react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,8 +38,15 @@ import {
 } from '@/components/ui/select';
 import RichTextEditor from '@/components/rich-text-editor/Editor';
 import Uploader from '@/components/file-uploader/Uploader';
+import { useTransition } from 'react';
+import { tryCatch } from '@/hooks/try-catch';
+import { createCourse } from './action';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function CourseCreationPage() {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema as any),
     defaultValues: {
@@ -57,7 +64,20 @@ export default function CourseCreationPage() {
   });
 
   function onSubmit(values: CourseSchemaType) {
-    console.log(values);
+    startTransition(async () => {
+      const { data: result, error } = await tryCatch(createCourse(values));
+      if (error) {
+        toast.error('An unexpected error occurred. Please try again.');
+      }
+
+      if (result?.status == 'success') {
+        toast.success(result.message);
+        form.reset();
+        router.push('/admin/courses');
+      } else if (result?.status === 'error') {
+        toast.error(result.message);
+      }
+    });
   }
 
   return (
@@ -301,9 +321,22 @@ export default function CourseCreationPage() {
                 )}
               />
 
-              <Button className="flex gap-2 items-center">
-                <span>Create Course</span>
-                <PlusIcon size={16} />
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="flex gap-2 items-center"
+              >
+                {isPending ? (
+                  <>
+                    <span>Creating....</span>
+                    <Loader2 />
+                  </>
+                ) : (
+                  <>
+                    <span>Create Course</span>
+                    <PlusIcon size={16} />
+                  </>
+                )}
               </Button>
             </form>
           </Form>
