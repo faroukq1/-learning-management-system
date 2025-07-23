@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DndContext,
+  DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   rectIntersection,
@@ -9,6 +10,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import {
+  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
@@ -18,9 +20,9 @@ import { CSS } from '@dnd-kit/utilities';
 import { useState } from 'react';
 
 export function CourseStructure() {
-  const [items] = useState(['1', '2', '3']);
+  const [items, setItems] = useState(['1', '2', '3']);
 
-  function SortableItem(props) {
+  const SortableItem = (props: any) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({ id: props.id });
 
@@ -31,13 +33,22 @@ export function CourseStructure() {
 
     return (
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-        {/* ... */}
+        {props.id}
       </div>
     );
-  }
+  };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (event) => {
     // handle drag and drop
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
   };
 
   const sensors = useSensors(
@@ -47,17 +58,22 @@ export function CourseStructure() {
     })
   );
   return (
-    <DndContext collisionDetection={rectIntersection} onDragEnd={handleDragEnd}>
+    <DndContext
+      collisionDetection={rectIntersection}
+      onDragEnd={handleDragEnd}
+      sensors={sensors}
+    >
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
         </CardHeader>
 
         <CardContent>
-          <SortableContext
-            strategy={verticalListSortingStrategy}
-            items={items}
-          ></SortableContext>
+          <SortableContext strategy={verticalListSortingStrategy} items={items}>
+            {items.map((id) => (
+              <SortableItem key={id} id={id} />
+            ))}
+          </SortableContext>
         </CardContent>
       </Card>
     </DndContext>
