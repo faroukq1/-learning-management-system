@@ -50,7 +50,7 @@ export default async function EditRoute({ params }: { params: Params }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CourseStructure />
+              <CourseStructure data={data} />
             </CardContent>
           </Card>
         </TabsContent>
