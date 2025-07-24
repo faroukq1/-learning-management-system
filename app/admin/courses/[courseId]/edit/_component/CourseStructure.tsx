@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils';
 import {
   DndContext,
+  DragEndEvent,
   DraggableSyntheticListeners,
   KeyboardSensor,
   PointerSensor,
@@ -36,7 +37,7 @@ import {
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
-import { reorderLessons } from '../actions';
+import { reorderChapters, reorderLessons } from '../actions';
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -99,7 +100,7 @@ export function CourseStructure({ data }: iAppProps) {
     );
   };
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over || active.id === over.id) return;
@@ -143,6 +144,28 @@ export function CourseStructure({ data }: iAppProps) {
 
       const previsouItems = [...items];
       setItems(updatedChapterForState);
+      if (courseId) {
+        const chapterToUpdate = updatedChapterForState.map((chapter) => ({
+          id: chapter.id,
+          position: chapter.order,
+        }));
+
+        const reorderPromise = () => reorderChapters(courseId, chapterToUpdate);
+
+        toast.promise(reorderPromise, {
+          loading: 'Reordering chapters...',
+          success: (result) => {
+            if (result.status === 'success') return result.message;
+            throw new Error(result.message);
+          },
+          error: () => {
+            setItems(previsouItems);
+            return 'Failed to reorder chapters.';
+          },
+        });
+      }
+
+      return;
     }
 
     if (activeType === 'lesson' && overType === 'lesson') {
