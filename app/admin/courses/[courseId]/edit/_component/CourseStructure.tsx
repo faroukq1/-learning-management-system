@@ -38,6 +38,8 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { reorderChapters, reorderLessons } from '../actions';
+import NewChapterModal from './NewChapterModal';
+import NewLessonModal from './NewLessonModal';
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -291,6 +293,7 @@ export function CourseStructure({ data }: iAppProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between border-b border-border">
           <CardTitle>Chapters</CardTitle>
+          <NewChapterModal courseId={data.id} />
         </CardHeader>
 
         <CardContent className="space-y-8">
@@ -371,9 +374,10 @@ export function CourseStructure({ data }: iAppProps) {
                             ))}
                           </SortableContext>
                           <div className="p-2">
-                            <Button variant="outline" className="w-full">
-                              Create New Lesson
-                            </Button>
+                            <NewLessonModal
+                              chapterId={item.id}
+                              courseId={data.id}
+                            />
                           </div>
                         </div>
                       </CollapsibleContent>
