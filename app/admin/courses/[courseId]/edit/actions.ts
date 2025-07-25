@@ -247,3 +247,152 @@ export async function createLesson(
     };
   }
 }
+
+export async function deleteLesson(
+  chapterId: string,
+  courseId: string,
+  lessonId: string
+): Promise<ApiResponse> {
+  await requireAdmin();
+  try {
+    const chapterWithLesson = await prisma.chapter.findUnique({
+      where: {
+        id: chapterId,
+      },
+      select: {
+        lesson: {
+          orderBy: {
+            position: 'asc',
+          },
+          select: {
+            id: true,
+            position: true,
+          },
+        },
+      },
+    });
+
+    if (!chapterWithLesson) {
+      return {
+        status: 'error',
+        message: 'Chapter not found.',
+      };
+    }
+
+    const lessons = chapterWithLesson.lesson;
+    const lessonToDelete = lessons.find((lesson) => lesson.id === lessonId);
+
+    if (!lessonToDelete) {
+      return {
+        status: 'error',
+        message: 'Lesson not found in the chapter.',
+      };
+    }
+
+    const remainingLessons = lessons.filter((lesson) => lesson.id !== lessonId);
+
+    const updates = remainingLessons.map((lesson, index) => {
+      return prisma.lesson.update({
+        where: { id: lesson.id },
+        data: { position: index + 1 },
+      });
+    });
+
+    await prisma.$transaction([
+      ...updates,
+      prisma.lesson.delete({
+        where: {
+          id: lessonId,
+          chapterId: chapterId,
+        },
+      }),
+    ]);
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+    return {
+      status: 'success',
+      message: 'lesson deleted and positions updated successfully.',
+    };
+  } catch {
+    return {
+      status: 'error',
+      message: 'Failed to delete lesson.',
+    };
+  }
+}
+
+export async function deleteChapter(
+  chapterId: string,
+  courseId: string
+): Promise<ApiResponse> {
+  await requireAdmin();
+  try {
+    const courseWithChapter = await prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+      select: {
+        chapter: {
+          orderBy: {
+            position: 'asc',
+          },
+          select: {
+            id: true,
+            position: true,
+          },
+        },
+      },
+    });
+
+    if (!courseWithChapter) {
+      return {
+        status: 'error',
+        message: 'Course not found.',
+      };
+    }
+
+    const chapters = courseWithChapter.chapter;
+    const chapterToDelete = chapters.find(
+      (chapter) => chapter.id === chapterId
+    );
+
+    if (!chapterToDelete) {
+      return {
+        status: 'error',
+        message: 'chapter not found in the course.',
+      };
+    }
+
+    const remainingChapters = chapters.filter(
+      (chapter) => chapter.id !== chapterId
+    );
+
+    const updates = remainingChapters.map((chapter, index) => {
+      return prisma.chapter.update({
+        where: { id: chapter.id },
+        data: { position: index + 1 },
+      });
+    });
+
+    await prisma.$transaction([
+      ...updates,
+      prisma.chapter.delete({
+        where: {
+          id: chapterId,
+          courseId: courseId,
+        },
+      }),
+    ]);
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+    return {
+      status: 'success',
+      message: 'Chapter deleted and positions updated successfully.',
+    };
+  } catch {
+    return {
+      status: 'error',
+      message: 'Failed to delete chapter.',
+    };
+  }
+}

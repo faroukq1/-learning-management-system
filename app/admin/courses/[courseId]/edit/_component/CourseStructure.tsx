@@ -32,7 +32,6 @@ import {
   FileText,
   GripVertical,
   GripVerticalIcon,
-  Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -40,6 +39,8 @@ import { toast } from 'sonner';
 import { reorderChapters, reorderLessons } from '../actions';
 import NewChapterModal from './NewChapterModal';
 import NewLessonModal from './NewLessonModal';
+import DeleteLesson from './DeleteLesson';
+import DeleteChapter from './DeleteChapter';
 
 interface iAppProps {
   data: AdminCourseSingularType;
@@ -332,9 +333,7 @@ export function CourseStructure({ data }: iAppProps) {
                             {item.title}
                           </p>
                         </div>
-                        <Button size="icon" variant="outline">
-                          <Trash2 className="size-4" />
-                        </Button>
+                        <DeleteChapter chapterId={item.id} courseId={data.id} />
                       </div>
                       <CollapsibleContent>
                         <div className="p-1">
@@ -365,9 +364,11 @@ export function CourseStructure({ data }: iAppProps) {
                                         {lesson.title}
                                       </Link>
                                     </div>
-                                    <Button variant="outline" size="icon">
-                                      <Trash2 className="size-4" />
-                                    </Button>
+                                    <DeleteLesson
+                                      chapterId={item.id}
+                                      courseId={data.id}
+                                      lessonId={lesson.id}
+                                    />
                                   </div>
                                 )}
                               </SortableItem>
