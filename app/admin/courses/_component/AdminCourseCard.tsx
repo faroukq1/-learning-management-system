@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Skeleton } from '@/components/ui/skeleton';
 import useConstructUrl from '@/hooks/use-construct-url';
 import {
   ArrowRight,
@@ -97,6 +98,47 @@ export default function AdminCourseCard({ data }: iAppProps) {
         >
           Edit Course <ArrowRight className="size-4" />
         </Link>
+      </CardContent>
+    </Card>
+  );
+}
+
+export const AdminCourseCardSkelatonLayout = () => {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-7">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <AdminCourseCardSkelaton key={index} />
+      ))}
+    </div>
+  );
+};
+
+export function AdminCourseCardSkelaton() {
+  return (
+    <Card className="group relative p-4 space-y-4">
+      <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+        <Skeleton className="h-6 w-16 rounded-full" />
+        <Skeleton className="size-8 rounded-md" />
+      </div>
+
+      <div className="relative w-full">
+        <Skeleton className="w-full rounded-lg aspect-video h-[250px] object-cover" />
+      </div>
+
+      <CardContent className="w-full space-y-4 p-0 pt-2">
+        <div className="space-y-2">
+          <Skeleton className="h-6 w-3/4 rounded" />
+          <Skeleton className="h-4 w-full rounded" />
+        </div>
+
+        {/* Author / Meta */}
+        <div className="flex items-center gap-4">
+          <Skeleton className="size-6 rounded-md" />
+          <Skeleton className="h-4 w-10 rounded" />
+        </div>
+
+        {/* Button */}
+        <Skeleton className="h-10 w-full rounded" />
       </CardContent>
     </Card>
   );
