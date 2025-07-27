@@ -25,7 +25,7 @@ const aj = arcjet
     fixedWindow({
       mode: 'LIVE',
       window: '1m',
-      max: 5,
+      max: 15,
     })
   );
 
