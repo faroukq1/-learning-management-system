@@ -1,5 +1,5 @@
 'use client';
-import { AdminCourseSingularType } from '@/app/data/admin/Admin-get-course';
+import { AdminCourseSingularType } from '@/app/data/admin/admin-get-course';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {

@@ -1,4 +1,3 @@
-import { adminGetCourse } from '@/app/data/admin/Admin-get-course';
 import {
   Card,
   CardContent,
@@ -9,6 +8,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EditCourseForm } from './_component/EditCourseForm';
 import { CourseStructure } from './_component/CourseStructure';
+import { adminGetCourse } from '@/app/data/admin/Admin-get-course';
 
 type Params = Promise<{ courseId: string }>;
 
