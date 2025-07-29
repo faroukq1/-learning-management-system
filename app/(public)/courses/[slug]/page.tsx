@@ -261,7 +261,12 @@ export default async function SlugPage({ params }: { params: Params }) {
 
               <form>
                 {isEnrolled ? (
-                  <Link href="/dashboard" className={buttonVariants()}>
+                  <Link
+                    href="/dashboard"
+                    className={buttonVariants({
+                      className: 'w-full',
+                    })}
+                  >
                     Watch Course
                   </Link>
                 ) : (
