@@ -9,7 +9,7 @@ export async function adminGetRecentCourses() {
     orderBy: {
       createdAt: 'desc',
     },
-    take: 2,
+    take: 3,
     select: {
       id: true,
       title: true,
