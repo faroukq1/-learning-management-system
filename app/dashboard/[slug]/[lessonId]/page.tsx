@@ -7,7 +7,7 @@ type Params = Promise<{ lessonId: string }>;
 
 export default async function LessonPageRoute({ params }: { params: Params }) {
   const { lessonId } = await params;
-  const data = await getLessonContent(lessonId);
+  await getLessonContent(lessonId);
 
   return (
     <Suspense fallback={<LessonSkelaton />}>

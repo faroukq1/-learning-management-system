@@ -153,8 +153,6 @@ export async function enrollInCourseAction(
 
     checkoutUrl = sessionUrl;
   } catch (error: any) {
-    console.error(error);
-
     if (
       error instanceof Stripe.errors.StripeError ||
       error?.type === 'StripeInvalidRequestError'

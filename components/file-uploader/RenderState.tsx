@@ -1,11 +1,5 @@
 import { cn } from '@/lib/utils';
-import {
-  ChartNoAxesColumnDecreasing,
-  CloudUpload,
-  ImageIcon,
-  Loader2,
-  XIcon,
-} from 'lucide-react';
+import { CloudUpload, ImageIcon, Loader2, XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import Image from 'next/image';
 

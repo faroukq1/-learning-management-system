@@ -35,7 +35,7 @@ const chartConfig = {
 export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
   const totalEnrollment = React.useMemo(
     () => data.reduce((acc, curr) => acc + curr.enrollments, 0),
-    []
+    [data]
   );
   return (
     <Card className="@container/card">

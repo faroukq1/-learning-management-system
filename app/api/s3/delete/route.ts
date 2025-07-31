@@ -50,7 +50,7 @@ export async function DELETE(request: Request) {
       { message: 'File Deleted Successfully' },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     // handle error
     return NextResponse.json(
       { error: 'Missing or Invalid object key' },

@@ -2,7 +2,7 @@ import { getIndividualCourse } from '@/app/data/course/get-course';
 import { checkIfCourseBought } from '@/app/data/user/user-is-enrolled';
 import RenderDescription from '@/components/rich-text-editor/RenderDescription';
 import { Badge } from '@/components/ui/badge';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Collapsible,
