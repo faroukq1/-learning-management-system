@@ -30,8 +30,13 @@ import logo from '@/public/logo.png';
 const data = {
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'user dashboard',
       url: '/dashboard',
+      icon: IconDashboard,
+    },
+    {
+      title: 'admin dashboard',
+      url: '/admin',
       icon: IconDashboard,
     },
   ],

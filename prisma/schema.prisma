@@ -30,7 +30,7 @@ model User {
   stripeCustomerId String? @unique
 
 
-  role          String?
+  role          String @default("admin")
   banned        Boolean?
   banReason     String?
   banExpires    DateTime?
