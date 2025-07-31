@@ -1,5 +1,5 @@
 'use client';
-import { AdminCourseSingularType } from '@/app/data/admin/admin-get-course';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -41,6 +41,7 @@ import NewChapterModal from './NewChapterModal';
 import NewLessonModal from './NewLessonModal';
 import DeleteLesson from './DeleteLesson';
 import DeleteChapter from './DeleteChapter';
+import { AdminCourseSingularType } from '@/app/data/admin/admin-get-courses';
 
 interface iAppProps {
   data: AdminCourseSingularType;
