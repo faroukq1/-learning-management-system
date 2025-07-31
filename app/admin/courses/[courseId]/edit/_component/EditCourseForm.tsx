@@ -43,7 +43,7 @@ import { tryCatch } from '@/hooks/try-catch';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { editCourse } from '../actions';
-import { AdminCourseSingularType } from '@/app/data/admin/admin-get-course';
+import { AdminCourseSingularType } from '@/app/data/admin/admin-get-courses';
 
 interface iAppProps {
   data: AdminCourseSingularType;
