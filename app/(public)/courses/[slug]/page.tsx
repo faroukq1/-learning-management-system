@@ -18,7 +18,7 @@ import {
   IconClock,
   IconPlayerPlay,
 } from '@tabler/icons-react';
-import { CheckIcon, FileKey } from 'lucide-react';
+import { CheckIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import EnrollmentButton from './_component/EnrollmentButton';
@@ -34,7 +34,7 @@ export default async function SlugPage({ params }: { params: Params }) {
       <div className="order-1 lg:col-span-2">
         <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-lg">
           <Image
-            src={`https://${env.NEXT_PUBLIC_S3_BUCKET_IMAGES}.fly.storage.tigris.dev/${FileKey}`}
+            src={`https://${env.NEXT_PUBLIC_S3_BUCKET_IMAGES}.fly.storage.tigris.dev/${course.fileKey}`}
             alt={course.title}
             fill
             className="object-cover"
