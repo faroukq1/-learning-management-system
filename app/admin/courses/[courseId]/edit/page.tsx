@@ -8,7 +8,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EditCourseForm } from './_component/EditCourseForm';
 import { CourseStructure } from './_component/CourseStructure';
-import { adminGetCourse } from '@/app/data/admin/admin-get-course';
+import { adminGetCourse } from '@/app/data/admin/admin-get-courses';
 
 type Params = Promise<{ courseId: string }>;
 
